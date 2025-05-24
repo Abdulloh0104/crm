@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  BadRequestException,
 } from "@nestjs/common";
 import { AdminService } from "./admin.service";
 import { CreateAdminDto } from "./dto/create-admin.dto";
@@ -30,7 +31,10 @@ export class AdminResolver {
   }
 
   @Mutation(() => Admin)
-  createAdmin(@Args("createAdmin") createAdminDto: CreateAdminDto) {
+ async createAdmin(@Args("createAdmin") createAdminDto: CreateAdminDto) {
+   if (!createAdminDto.email) {
+     throw new BadRequestException("Email is required");
+   }
     return this.adminService.create(createAdminDto);
   }
 
@@ -49,7 +53,8 @@ export class AdminResolver {
   ) {
     return this.adminService.update(+id, updateAdminDto);
   }
-  @Mutation(() => Admin)
+  
+  @Mutation(() => Number)
   removeAdmin(@Args("id", { type: () => ID }) id: number) {
     return this.adminService.remove(+id);
   }

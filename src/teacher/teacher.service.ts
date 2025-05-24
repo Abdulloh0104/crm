@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { CreateTeacherDto } from "./dto/create-teacher.dto";
 import { UpdateTeacherDto } from "./dto/update-teacher.dto";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -36,13 +40,13 @@ export class TeacherService {
     return this.teacherRepo.findOneBy({ email });
   }
 
- async update(id: number, updateTeacherDto: UpdateTeacherDto) {
-    const user = await this.teacherRepo.preload({ id,... updateTeacherDto});
-  if (!user) {
-    throw new NotFoundException(`User with ${id} id not found`);
-  }
+  async update(id: number, updateTeacherDto: UpdateTeacherDto) {
+    const user = await this.teacherRepo.preload({ id, ...updateTeacherDto });
+    if (!user) {
+      throw new NotFoundException(`User with ${id} id not found`);
+    }
 
-  return this.teacherRepo.save(user);
+    return this.teacherRepo.save(user);
   }
 
   async updateRefreshToken(id: number, hashed_refresh_token: string) {
@@ -79,8 +83,8 @@ export class TeacherService {
     return { message: "Doctor password was changed" };
   }
 
- async remove(id: number) {
-    await this.teacherRepo.delete(id)
-    return id
+  async remove(id: number) {
+    await this.teacherRepo.delete(id);
+    return id;
   }
 }

@@ -36,7 +36,7 @@ input CreateTeacherDto {
 type Mutation {
   createAdmin(createAdmin: CreateAdminDto!): Admin!
   createTeacher(createTeacher: CreateTeacherDto!): Teacher!
-  removeAdmin(id: ID!): Admin!
+  removeAdmin(id: ID!): Float!
   removeTeacher(id: ID!): Float!
   updateAdmin(id: ID!, updateAdmin: UpdateAdminDto!): Admin!
   updatePassword(id: ID!, updatePassword: UpdatePasswordDto!): UpdatePasswordResponse!

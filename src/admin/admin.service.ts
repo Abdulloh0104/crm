@@ -1,11 +1,15 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateAdminDto } from './dto/create-admin.dto';
-import { UpdateAdminDto } from './dto/update-admin.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Admin } from './entities/admin.entity';
-import { Repository } from 'typeorm';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
+import { CreateAdminDto } from "./dto/create-admin.dto";
+import { UpdateAdminDto } from "./dto/update-admin.dto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Admin } from "./entities/admin.entity";
+import { Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
-import { UpdatePasswordDto } from './dto/update-password.dto';
+import { UpdatePasswordDto } from "./dto/update-password.dto";
 
 @Injectable()
 export class AdminService {
@@ -18,11 +22,10 @@ export class AdminService {
       throw new BadRequestException("Parollar mos emas");
     }
     const hashed_password = await bcrypt.hash(password, 7);
-    const newUser = await this.adminRepo.save({
+    return this.adminRepo.save({
       ...createAdminDto,
       password: hashed_password,
     });
-    return { message: "New doctor added", newUser };
   }
 
   findAll() {
@@ -37,8 +40,13 @@ export class AdminService {
     return this.adminRepo.findOneBy({ email });
   }
 
-  update(id: number, updateAdminDto: UpdateAdminDto) {
-    return this.adminRepo.update({ id }, updateAdminDto);
+ async update(id: number, updateAdminDto: UpdateAdminDto) {
+    const user = await this.adminRepo.preload({ id, ...updateAdminDto});
+    if (!user) {
+      throw new NotFoundException(` with ${id} id not found`);
+    }
+
+    return this.adminRepo.save(user);
   }
 
   async updateRefreshToken(id: number, hashed_refresh_token: string) {
@@ -48,7 +56,7 @@ export class AdminService {
     );
     return updatedUser;
   }
-  
+
   async updatePassword(id: number, updatePasswordDto: UpdatePasswordDto) {
     const user = await this.adminRepo.findOneBy({ id });
     if (!user || !user.password) {
@@ -75,7 +83,8 @@ export class AdminService {
     return { message: "Doctor password was changed" };
   }
 
-  remove(id: number) {
-    return this.adminRepo.delete(id);
+  async remove(id:number) {
+    await this.adminRepo.delete(id);
+    return id;
   }
 }
