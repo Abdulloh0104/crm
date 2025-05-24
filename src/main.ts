@@ -6,7 +6,7 @@ import { BadRequestException, ValidationPipe } from '@nestjs/common';
 
 async function start() {
   try {
-    const PORT = process.env.PORT || 3030;
+    const PORT = process.env.API_PORT || 3030;
     const app = await NestFactory.create(AppModule);
     app.use(cookieParser());
     app.setGlobalPrefix("api");
@@ -15,7 +15,7 @@ async function start() {
       origin: (origin, callback) => {
         const allowedOrigins = [
           "http://crm:8000",
-          "http://localhost:3000",
+          "http://localhost:4000",
           "https://crm.uz",
           "https://api/crm.uz",
           "https://crm.vercel.app",

@@ -18,11 +18,10 @@ export class TeacherService {
       throw new BadRequestException("Parollar mos emas");
     }
     const hashed_password = await bcrypt.hash(password, 7);
-    const newUser = await this.teacherRepo.save({
+    return this.teacherRepo.save({
       ...createTeacherDto,
       password: hashed_password,
     });
-    return { message: "New Teacher added", newUser };
   }
 
   findAll() {
@@ -37,8 +36,13 @@ export class TeacherService {
     return this.teacherRepo.findOneBy({ email });
   }
 
-  update(id: number, updateTeacherDto: UpdateTeacherDto) {
-    return this.teacherRepo.update({ id }, updateTeacherDto);
+ async update(id: number, updateTeacherDto: UpdateTeacherDto) {
+    const user = await this.teacherRepo.preload({ id,... updateTeacherDto});
+  if (!user) {
+    throw new NotFoundException(`User with ${id} id not found`);
+  }
+
+  return this.teacherRepo.save(user);
   }
 
   async updateRefreshToken(id: number, hashed_refresh_token: string) {
@@ -75,7 +79,8 @@ export class TeacherService {
     return { message: "Doctor password was changed" };
   }
 
-  remove(id: number) {
-    return this.teacherRepo.delete(id)
+ async remove(id: number) {
+    await this.teacherRepo.delete(id)
+    return id
   }
 }

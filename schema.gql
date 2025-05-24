@@ -1,0 +1,88 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Admin {
+  email: String!
+  first_name: String
+  hashed_refresh_token: String
+  id: ID!
+  is_active: Boolean!
+  is_creator: Boolean!
+  last_name: String
+  password: String!
+  phone: String
+}
+
+input CreateAdminDto {
+  confirm_password: String!
+  email: String!
+  first_name: String
+  last_name: String
+  password: String!
+  phone: String
+}
+
+input CreateTeacherDto {
+  confirm_password: String!
+  email: String!
+  first_name: String
+  last_name: String
+  password: String!
+  phone: String
+  role: String
+}
+
+type Mutation {
+  createAdmin(createAdmin: CreateAdminDto!): Admin!
+  createTeacher(createTeacher: CreateTeacherDto!): Teacher!
+  removeAdmin(id: ID!): Admin!
+  removeTeacher(id: ID!): Float!
+  updateAdmin(id: ID!, updateAdmin: UpdateAdminDto!): Admin!
+  updatePassword(id: ID!, updatePassword: UpdatePasswordDto!): UpdatePasswordResponse!
+  updateTeacher(id: ID!, updateTeacher: UpdateTeacherDto!): Teacher!
+}
+
+type Query {
+  findAllAdmins: [Admin!]!
+  findAllTeachers: [Teacher!]!
+  findOneAdmin(id: ID!): Admin!
+  findOneTeacher(id: ID!): Teacher!
+}
+
+type Teacher {
+  email: String!
+  first_name: String
+  hashed_refresh_token: String
+  id: ID!
+  is_active: Boolean!
+  last_name: String
+  password: String!
+  phone: String
+  role: String!
+}
+
+input UpdateAdminDto {
+  email: String!
+  first_name: String
+  last_name: String
+  phone: String
+}
+
+input UpdatePasswordDto {
+  confirm_password: String!
+  newPassword: String!
+  password: String!
+}
+
+type UpdatePasswordResponse {
+  message: String!
+}
+
+input UpdateTeacherDto {
+  email: String
+  first_name: String
+  last_name: String
+  phone: String
+  role: String
+}
