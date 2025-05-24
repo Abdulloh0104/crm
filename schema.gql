@@ -23,6 +23,18 @@ input CreateAdminDto {
   phone: String
 }
 
+input CreateStudentDto {
+  avatar_url: String
+  confirm_password: String!
+  date_of_birth: DateTime
+  email: String!
+  first_name: String
+  gender: String
+  last_name: String
+  password: String!
+  phone: String
+}
+
 input CreateTeacherDto {
   confirm_password: String!
   email: String!
@@ -33,21 +45,47 @@ input CreateTeacherDto {
   role: String
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Mutation {
   createAdmin(createAdmin: CreateAdminDto!): Admin!
+  createStudent(createStudent: CreateStudentDto!): Student!
   createTeacher(createTeacher: CreateTeacherDto!): Teacher!
   removeAdmin(id: ID!): Float!
+  removeStudent(id: ID!): Float!
   removeTeacher(id: ID!): Float!
   updateAdmin(id: ID!, updateAdmin: UpdateAdminDto!): Admin!
-  updatePassword(id: ID!, updatePassword: UpdatePasswordDto!): UpdatePasswordResponse!
+  updateAdminPassword(id: ID!, updatePassword: UpdatePasswordDto!): UpdatePasswordResponse!
+  updateStudent(id: ID!, updateStudent: UpdateStudentDto!): Student!
+  updateStudentPassword(id: ID!, updatePassword: UpdatePasswordDto!): UpdatePasswordResponse!
   updateTeacher(id: ID!, updateTeacher: UpdateTeacherDto!): Teacher!
+  updateTeacherPassword(id: ID!, updatePassword: UpdatePasswordDto!): UpdatePasswordResponse!
 }
 
 type Query {
   findAllAdmins: [Admin!]!
+  findAllStudents: [Student!]!
   findAllTeachers: [Teacher!]!
   findOneAdmin(id: ID!): Admin!
+  findOneStudent(id: ID!): Student!
   findOneTeacher(id: ID!): Teacher!
+}
+
+type Student {
+  avatar_url: String
+  date_of_birth: DateTime
+  email: String!
+  first_name: String
+  gender: String
+  hashed_refresh_token: String
+  id: ID!
+  is_active: Boolean!
+  last_name: String
+  password: String!
+  phone: String
 }
 
 type Teacher {
@@ -77,6 +115,16 @@ input UpdatePasswordDto {
 
 type UpdatePasswordResponse {
   message: String!
+}
+
+input UpdateStudentDto {
+  avatar_url: String
+  date_of_birth: DateTime
+  email: String
+  first_name: String
+  gender: String
+  last_name: String
+  phone: String
 }
 
 input UpdateTeacherDto {

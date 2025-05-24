@@ -39,7 +39,7 @@ export class AdminResolver {
   }
 
   @Mutation(() => UpdatePasswordResponse)
-  updatePassword(
+  updateAdminPassword(
     @Args("id", { type: () => ID }) id: number,
     @Args("updatePassword") updatePasswordDto: UpdatePasswordDto
   ) {

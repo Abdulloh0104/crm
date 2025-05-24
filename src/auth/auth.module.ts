@@ -10,20 +10,22 @@ import { AdminModule } from "../admin/admin.module";
 import { TeacherModule } from "../teacher/teacher.module";
 import { AuthTeacherController } from "./teacher/auth.controller";
 import { AuthTeacherService } from "./teacher/auth.service";
+import { StudentsModule } from "../students/students.module";
+import { AuthStudentController } from "./student/auth.controller";
+import { AuthStudentService } from "./student/auth.service";
 
 @Module({
   imports: [
     JwtModule.register({ global: true }),
-  AdminModule,
-  TeacherModule
+    AdminModule,
+    TeacherModule,
+    StudentsModule,
   ],
   controllers: [
     AuthAdminController,
     AuthTeacherController,
+    AuthStudentController,
   ],
-  providers: [
-    AuthAdminService,
-    AuthTeacherService
-  ],
+  providers: [AuthAdminService, AuthTeacherService, AuthStudentService],
 })
 export class AuthModule {}

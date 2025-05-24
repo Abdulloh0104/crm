@@ -1,7 +1,7 @@
 import { Field, InputType } from "@nestjs/graphql";
 
 @InputType()
-export class UpdateTeacherDto {
+export class UpdateStudentDto {
   @Field({ nullable: true })
   first_name?: string;
 
@@ -9,11 +9,17 @@ export class UpdateTeacherDto {
   last_name?: string;
 
   @Field({ nullable: true })
-  email?: string;
-
-  @Field({ nullable: true })
   phone?: string;
 
   @Field({ nullable: true })
-  role?: string;
+  email?: string;
+
+  @Field({ nullable: true })
+  gender?: string;
+
+  @Field({ nullable: true })
+  date_of_birth?: Date;
+
+  @Field({ nullable: true })
+  avatar_url?: string;
 }

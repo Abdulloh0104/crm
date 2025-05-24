@@ -3,54 +3,55 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
-import { CreateAdminDto } from "./dto/create-admin.dto";
-import { UpdateAdminDto } from "./dto/update-admin.dto";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Admin } from "./entities/admin.entity";
+import { CreateStudentDto } from "./dto/create-student.dto";
+import { UpdateStudentDto } from "./dto/update-student.dto";
+import { Student } from "./entities/student.entity";
 import { Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
-import { UpdatePasswordDto } from "./dto/update-password.dto";
+
+import { InjectRepository } from "@nestjs/typeorm";
+import { UpdatePasswordDto } from "../admin/dto/update-password.dto";
 
 @Injectable()
-export class AdminService {
+export class StudentsService {
   constructor(
-    @InjectRepository(Admin) private readonly adminRepo: Repository<Admin>
+    @InjectRepository(Student) private readonly studentRepo: Repository<Student>
   ) {}
-  async create(createAdminDto: CreateAdminDto) {
-    const { password, confirm_password } = createAdminDto;
+  async create(createStudentDto: CreateStudentDto) {
+    const { password, confirm_password } = createStudentDto;
     if (password !== confirm_password) {
       throw new BadRequestException("Parollar mos emas");
     }
     const hashed_password = await bcrypt.hash(password, 7);
-    return this.adminRepo.save({
-      ...createAdminDto,
+    return this.studentRepo.save({
+      ...createStudentDto,
       password: hashed_password,
     });
   }
 
   findAll() {
-    return this.adminRepo.find();
+   return this.studentRepo.find();
   }
 
   findOne(id: number) {
-    return this.adminRepo.findOneBy({ id });
+    return this.studentRepo.findOneBy({ id });
   }
 
-  findAdminByEmail(email: string) {
-    return this.adminRepo.findOneBy({ email });
+  findStudentByEmail(email: string) {
+    return this.studentRepo.findOneBy({ email });
   }
 
- async update(id: number, updateAdminDto: UpdateAdminDto) {
-    const user = await this.adminRepo.preload({ id, ...updateAdminDto});
+  async update(id: number, updateStudentDto: UpdateStudentDto) {
+    const user = await this.studentRepo.preload({ id, ...updateStudentDto });
     if (!user) {
-      throw new NotFoundException(` with ${id} id not found`);
+      throw new NotFoundException(`User with ${id} id not found`);
     }
 
-    return this.adminRepo.save(user);
+    return this.studentRepo.save(user);
   }
 
   async updateRefreshToken(id: number, hashed_refresh_token: string) {
-    const updatedUser = await this.adminRepo.update(
+    const updatedUser = await this.studentRepo.update(
       { id },
       { hashed_refresh_token }
     );
@@ -58,7 +59,7 @@ export class AdminService {
   }
 
   async updatePassword(id: number, updatePasswordDto: UpdatePasswordDto) {
-    const user = await this.adminRepo.findOneBy({ id });
+    const user = await this.studentRepo.findOneBy({ id });
     if (!user || !user.password) {
       throw new NotFoundException("user not found");
     }
@@ -73,18 +74,18 @@ export class AdminService {
       throw new BadRequestException("Parollar mos emas");
     }
     const hashed_password = await bcrypt.hash(newPassword, 7);
-    await this.adminRepo.update(
+    await this.studentRepo.update(
       { id },
       {
         ...user,
         password: hashed_password,
       }
     );
-    return { message: "Admin password was changed" };
+    return { message: "Student password was changed" };
   }
 
-  async remove(id:number) {
-    await this.adminRepo.delete(id);
+  async remove(id: number) {
+    await this.studentRepo.delete({ id });
     return id;
   }
 }

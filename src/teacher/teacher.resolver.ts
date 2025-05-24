@@ -3,6 +3,8 @@ import { CreateTeacherDto } from "./dto/create-teacher.dto";
 import { UpdateTeacherDto } from "./dto/update-teacher.dto";
 import { Teacher } from "./entities/teacher.entity";
 import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { UpdatePasswordResponse } from "../admin/dto/update-password.response.ts";
+import { UpdatePasswordDto } from "../admin/dto/update-password.dto";
 
 @Resolver("teacher")
 export class TeacherResolver {
@@ -29,6 +31,14 @@ export class TeacherResolver {
     @Args("updateTeacher") updateTeacherDto: UpdateTeacherDto
   ) {
     return this.teacherService.update(+id, updateTeacherDto);
+  }
+
+  @Mutation(() => UpdatePasswordResponse)
+  updateTeacherPassword(
+    @Args("id", { type: () => ID }) id: number,
+    @Args("updatePassword") updatePasswordDto: UpdatePasswordDto
+  ) {
+    return this.teacherService.updatePassword(+id, updatePasswordDto);
   }
 
   @Mutation(() => Number)
