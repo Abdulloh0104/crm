@@ -17,6 +17,7 @@ type Admin {
 type Course {
   description: String
   duration: String
+  groups: [Group!]!
   id: ID!
   lesson_duration: String
   lessons_in_a_week: Float
@@ -40,6 +41,14 @@ input CreateCourseDto {
   lessons_in_a_week: Float
   price: String
   title: String!
+}
+
+input CreateGroupDto {
+  course_id: Float
+  end_date: DateTime
+  name: String!
+  start_date: DateTime
+  status: String
 }
 
 input CreateStudentDto {
@@ -69,18 +78,30 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Group {
+  course: Course!
+  end_date: DateTime
+  id: ID!
+  name: String!
+  start_date: DateTime
+  status: String
+}
+
 type Mutation {
   createAdmin(createAdmin: CreateAdminDto!): Admin!
   createCourse(createCourse: CreateCourseDto!): Course!
+  createGroup(createGroup: CreateGroupDto!): Group!
   createStudent(createStudent: CreateStudentDto!): Student!
   createTeacher(createTeacher: CreateTeacherDto!): Teacher!
   removeAdmin(id: ID!): Float!
   removeCourse(id: ID!): Float!
+  removeGroup(id: ID!): Float!
   removeStudent(id: ID!): Float!
   removeTeacher(id: ID!): Float!
   updateAdmin(id: ID!, updateAdmin: UpdateAdminDto!): Admin!
   updateAdminPassword(id: ID!, updatePassword: UpdatePasswordDto!): UpdatePasswordResponse!
   updateCourse(id: ID!, updateCourse: UpdateCourseDto!): Course!
+  updateGroup(id: ID!, updateGroup: UpdateGroupDto!): Group!
   updateStudent(id: ID!, updateStudent: UpdateStudentDto!): Student!
   updateStudentPassword(id: ID!, updatePassword: UpdatePasswordDto!): UpdatePasswordResponse!
   updateTeacher(id: ID!, updateTeacher: UpdateTeacherDto!): Teacher!
@@ -90,10 +111,12 @@ type Mutation {
 type Query {
   findAllAdmins: [Admin!]!
   findAllCourses: [Course!]!
+  findAllGroups: [Group!]!
   findAllStudents: [Student!]!
   findAllTeachers: [Teacher!]!
   findOneAdmin(id: ID!): Admin!
   findOneCourse(id: ID!): Course!
+  findOneGroup(id: ID!): Group!
   findOneStudent(id: ID!): Student!
   findOneTeacher(id: ID!): Teacher!
 }
@@ -138,6 +161,14 @@ input UpdateCourseDto {
   lessons_in_a_week: Float
   price: String
   title: String
+}
+
+input UpdateGroupDto {
+  course_id: Float
+  end_date: DateTime
+  name: String
+  start_date: DateTime
+  status: String
 }
 
 input UpdatePasswordDto {

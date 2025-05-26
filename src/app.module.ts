@@ -8,6 +8,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { StudentsModule } from './students/students.module';
 import { CoursesModule } from './courses/courses.module';
+import { GroupsModule } from './groups/groups.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { CoursesModule } from './courses/courses.module';
     TeacherModule,
     StudentsModule,
     CoursesModule,
+    GroupsModule,
   ],
   controllers: [],
   providers: [],

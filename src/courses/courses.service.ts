@@ -16,7 +16,7 @@ export class CoursesService {
   }
 
   findAll() {
-    return this.courseRepo.find();
+    return this.courseRepo.find({ relations: ["groups"] });
   }
 
   findOne(id: number) {

@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Group } from "../../groups/entities/group.entity";
 
 @ObjectType()
 @Entity()
@@ -31,4 +32,8 @@ export class Course {
   @Field({ nullable: true })
   @Column({ nullable: true })
   lesson_duration: string;
+
+  @OneToMany((type) => Group, (group) => group.course)
+  @Field((type) => [Group])
+  groups: Group[];
 }
