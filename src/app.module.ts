@@ -9,6 +9,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { StudentsModule } from './students/students.module';
 import { CoursesModule } from './courses/courses.module';
 import { GroupsModule } from './groups/groups.module';
+// import { TeacherGroupsModule } from './teacher_groups/teacher_groups.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { GroupsModule } from './groups/groups.module';
     StudentsModule,
     CoursesModule,
     GroupsModule,
+    // TeacherGroupsModule,
   ],
   controllers: [],
   providers: [],

@@ -22,4 +22,7 @@ export class CreateTeacherDto {
 
   @Field({ nullable: true })
   role: string;
+
+  @Field({ nullable: true })
+  group: string;
 }

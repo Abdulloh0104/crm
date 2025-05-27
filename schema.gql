@@ -49,6 +49,7 @@ input CreateGroupDto {
   name: String!
   start_date: DateTime
   status: String
+  teacher_id: Float
 }
 
 input CreateStudentDto {
@@ -67,6 +68,7 @@ input CreateTeacherDto {
   confirm_password: String!
   email: String!
   first_name: String
+  group: String
   last_name: String
   password: String!
   phone: String
@@ -169,6 +171,7 @@ input UpdateGroupDto {
   name: String
   start_date: DateTime
   status: String
+  teacher_id: Float
 }
 
 input UpdatePasswordDto {

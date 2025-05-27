@@ -29,7 +29,9 @@ export class TeacherService {
   }
 
   findAll() {
-    return this.teacherRepo.find();
+    return this.teacherRepo.find({
+      relations: ["groups"],
+    });
   }
 
   findOne(id: number) {

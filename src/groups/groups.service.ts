@@ -9,28 +9,46 @@ import { Group } from "./entities/group.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Course } from "../courses/entities/course.entity";
+import { Teacher } from "../teacher/entities/teacher.entity";
 
 @Injectable()
 export class GroupsService {
   constructor(
     @InjectRepository(Group) private readonly groupRepo: Repository<Group>,
-    @InjectRepository(Course) private readonly courseRepo: Repository<Course>
+    @InjectRepository(Course) private readonly courseRepo: Repository<Course>,
+    @InjectRepository(Teacher) private readonly teacherRepo: Repository<Teacher>
   ) {}
   async create(createGroupDto: CreateGroupDto) {
-    const { course_id, ...rest } = createGroupDto;
+    const { course_id, teacher_id, ...rest } = createGroupDto;
     const course = await this.courseRepo.findOneBy({ id: course_id });
 
     if (!course) {
       throw new BadRequestException("Course not found");
     }
 
+   let teachers: Teacher[] = [];
+    if (teacher_id) {
+      const teacher = await this.teacherRepo.findOneBy({ id: teacher_id });
+      if (!teacher) {
+        throw new BadRequestException("Teacher not found");
+      }
+
+      teachers.push(teacher);
+    }
     // const newGroup = this.groupRepo.create({ ...rest, course });
     // return this.groupRepo.save(newGroup);
-    return this.groupRepo.save({ ...rest, course });
+    
+    const group = this.groupRepo.create({
+      ...rest,
+      course,
+      teachers
+    });
+    return await this.groupRepo.save(group);
+    
   }
 
   findAll() {
-    return this.groupRepo.find({ relations: ["course"] });
+    return this.groupRepo.find({ relations: ["course", "teachers"] });
   }
 
   findOne(id: number) {
@@ -40,7 +58,7 @@ export class GroupsService {
   async update(id: number, updateGroupDto: UpdateGroupDto) {
     const group = await this.groupRepo.findOne({
       where: { id },
-      relations: ["course"],
+      relations: ["course","teachers"],
     });
 
     if (!group) {

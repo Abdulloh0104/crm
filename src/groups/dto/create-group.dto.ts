@@ -16,4 +16,7 @@ export class CreateGroupDto {
 
   @Field({ nullable: true })
   course_id: number;
+
+  @Field({ nullable: true })
+  teacher_id: number;
 }

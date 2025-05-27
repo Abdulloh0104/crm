@@ -2,7 +2,7 @@ import { Field, InputType } from "@nestjs/graphql";
 
 @InputType()
 export class UpdateGroupDto {
-  @Field({nullable:true})
+  @Field({ nullable: true })
   name?: string;
 
   @Field({ nullable: true })
@@ -16,4 +16,7 @@ export class UpdateGroupDto {
 
   @Field({ nullable: true })
   course_id?: number;
+
+  @Field({ nullable: true })
+  teacher_id?: number;
 }

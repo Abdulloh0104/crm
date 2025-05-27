@@ -9,6 +9,6 @@ import { TeacherResolver } from "./teacher.resolver";
   imports: [TypeOrmModule.forFeature([Teacher])],
   controllers: [TeacherController],
   providers: [TeacherService,TeacherResolver],
-  exports:[TeacherService]
+  exports:[TeacherService,TypeOrmModule]
 })
 export class TeacherModule {}
