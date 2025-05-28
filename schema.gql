@@ -87,6 +87,7 @@ type Group {
   name: String!
   start_date: DateTime
   status: String
+  studentGroups: [StudentGroup!]!
 }
 
 type Mutation {
@@ -135,6 +136,13 @@ type Student {
   last_name: String
   password: String!
   phone: String
+  studentGroups: [StudentGroup!]!
+}
+
+type StudentGroup {
+  id: ID!
+  is_active: Boolean
+  period: String
 }
 
 type Teacher {

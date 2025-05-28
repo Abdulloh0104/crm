@@ -42,13 +42,16 @@ export class GroupsService {
       ...rest,
       course,
       teachers
+      
     });
     return await this.groupRepo.save(group);
     
   }
 
   findAll() {
-    return this.groupRepo.find({ relations: ["course", "teachers"] });
+    return this.groupRepo.find({
+      relations: ["course", "teachers", "studentGroups", "students"],
+    });
   }
 
   findOne(id: number) {

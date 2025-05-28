@@ -10,6 +10,8 @@ import {
 } from "typeorm";
 import { Course } from "../../courses/entities/course.entity";
 import { Teacher } from "../../teacher/entities/teacher.entity";
+import { Student } from "../../students/entities/student.entity";
+import { StudentGroup } from "../../student_groups/entities/student_group.entity";
 
 @ObjectType()
 @Entity()
@@ -52,4 +54,12 @@ export class Group {
     inverseJoinColumn: { name: "teacher_id", referencedColumnName: "id" },
   })
   teachers: Teacher[];
+
+  
+  @OneToMany((type) => StudentGroup, (studentg) => studentg.group)
+  @Field((type) => [StudentGroup])
+  studentGroups: StudentGroup[];
+
+  @ManyToMany(() => Student, (student) => student.groups)
+  students: Student[];
 }

@@ -25,12 +25,15 @@ export class StudentsService {
     const hashed_password = await bcrypt.hash(password, 7);
     return this.studentRepo.save({
       ...createStudentDto,
+
       password: hashed_password,
     });
   }
 
   findAll() {
-   return this.studentRepo.find();
+    return this.studentRepo.find({
+      relations: ["studentGroups", "groups"],
+    });
   }
 
   findOne(id: number) {
